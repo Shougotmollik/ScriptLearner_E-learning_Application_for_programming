@@ -1,8 +1,29 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import Colors from "../Utils/Colors";
+import { client } from "../Utils/kindeConfig";
+import { AuthContext } from "../../App";
 
 const LoginScreen = () => {
+  const { auth, setAuth } = useContext(AuthContext);
+  const handleSignUp = async () => {
+    const token = await client.register();
+    if (token) {
+      console.log("Authenticate succesfully");
+      setAuth(true);
+      // User was authenticated
+    }
+  };
+
+  const handleSignIn = async () => {
+    const token = await client.login();
+    if (token) {
+      setAuth(true);
+      console.log("Authenticate succesfully");
+      // User was authenticated
+    }
+  };
+
   return (
     <View>
       <Image
@@ -16,20 +37,11 @@ const LoginScreen = () => {
           Learn programming to make life easier
         </Text>
         {/* Button */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            console.log("sign in clicked");
-          }}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.btnText}>Sign In</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            console.log("Clicked create Account");
-          }}
-        >
+        <TouchableOpacity onPress={handleSignUp}>
           <Text style={styles.textFour}>Create New Account</Text>
         </TouchableOpacity>
       </View>
